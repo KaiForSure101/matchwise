@@ -291,7 +291,7 @@ create table if not exists public.answers (
 
 -- COALESCE so null mode still enforces one row per question per user.
 create unique index if not exists answers_user_question_mode_uidx
-  on public.answers (user_id, question_key, (coalesce(mode::text, '_')));
+  on public.answers (user_id, question_key, mode) nulls not distinct;
 
 create index if not exists answers_user_id_idx on public.answers (user_id);
 
