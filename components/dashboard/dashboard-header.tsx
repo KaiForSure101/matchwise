@@ -37,7 +37,7 @@ export function DashboardHeader({ displayName, email }: DashboardHeaderProps) {
           Matchwise
         </Link>
         <span className="hidden text-sm text-muted-foreground sm:inline">
-          Dashboard
+          Workspace
         </span>
       </div>
 
@@ -62,6 +62,11 @@ export function DashboardHeader({ displayName, email }: DashboardHeaderProps) {
             </div>
           </DropdownMenuLabel>
           <DropdownMenuSeparator />
+          <DropdownMenuItem>
+            <Link href="/profile" className="w-full">
+              Profile
+            </Link>
+          </DropdownMenuItem>
           <DropdownMenuItem>
             <SignOutButton />
           </DropdownMenuItem>
