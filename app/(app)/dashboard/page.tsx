@@ -44,6 +44,15 @@ export default async function DashboardPage() {
           Explore matches
         </Link>
         <Link
+          href="/custom"
+          className={cn(
+            buttonVariants({ size: "lg" }),
+            "bg-[#0f4c45] text-white hover:bg-[#0c3d38]"
+          )}
+        >
+          Try custom match
+        </Link>
+        <Link
           href="/onboarding"
           className={cn(
             buttonVariants({ size: "lg" }),

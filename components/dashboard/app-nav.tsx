@@ -7,6 +7,7 @@ import { cn } from "@/lib/utils"
 
 const LINKS = [
   { href: "/dashboard", label: "Home" },
+  { href: "/custom", label: "Custom Match" },
   { href: "/profile", label: "Profile" },
   { href: "/profile/mode", label: "Mode" },
   { href: "/profile/preferences", label: "Preferences" },

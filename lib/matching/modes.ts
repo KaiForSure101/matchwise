@@ -18,13 +18,15 @@ export type DiscoveryPerson = {
 }
 
 export type DiscoveryResult = {
-  candidate: Pick<DiscoveryPerson, "id" | "displayName" | "username" | "location" | "avatarUrl" | "interests" | "skills" | "availability">
-  mode: DiscoveryMode
-  quality: "strong" | "good" | "moderate" | "low" | "insufficient"
-  confidence: MatchingResult["confidence"]["level"]
-  reasons: string[]
-  uncertainties: string[]
-  eligible: boolean
+candidate: Pick<DiscoveryPerson, "id" | "displayName" | "username" | "location" | "avatarUrl" | "interests" | "skills" | "availability"> & {
+  context?: Record<string, string | null>
+}
+mode: DiscoveryMode
+quality: "strong" | "good" | "moderate" | "low" | "insufficient"
+confidence: MatchingResult["confidence"]["level"]
+reasons: string[]
+uncertainties: string[]
+eligible: boolean
 }
 
 const modeWeights: Record<DiscoveryMode, Record<string, number>> = {
