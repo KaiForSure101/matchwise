@@ -19,6 +19,7 @@ Never put `SUPABASE_SERVICE_ROLE_KEY` or `DEEPSEEK_API_KEY` in client code or `N
 
 - **Phase 1:** Auth, landing, protected dashboard shell
 - **Phase 2:** Profiles, mode context, preferences, answers, availability, interests, skills
+- **Phase 3:** Pure TypeScript matching primitives, private block data, eligibility, hard boundaries, confidence, weighted scoring, explanations, and versioned results. No mode engine or discovery UI.
 
 ## Scripts
 
@@ -26,3 +27,4 @@ Never put `SUPABASE_SERVICE_ROLE_KEY` or `DEEPSEEK_API_KEY` in client code or `N
 - `npm run build` — production build
 - `npm run start` — serve production build
 - `npm run lint` — ESLint
+- `npm run test` — matching-engine unit tests

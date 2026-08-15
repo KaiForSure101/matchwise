@@ -455,3 +455,39 @@ drop policy if exists "Availability delete own" on public.availability;
 create policy "Availability delete own"
 on public.availability for delete to authenticated
 using (auth.uid() = user_id);
+
+-- ---------------------------------------------------------------------------
+-- User blocks (shared eligibility safety data)
+-- ---------------------------------------------------------------------------
+
+create table if not exists public.user_blocks (
+  id uuid primary key default gen_random_uuid(),
+  blocker_id uuid not null references auth.users (id) on delete cascade,
+  blocked_id uuid not null references auth.users (id) on delete cascade,
+  created_at timestamptz not null default now(),
+  constraint user_blocks_no_self_block check (blocker_id <> blocked_id),
+  unique (blocker_id, blocked_id)
+);
+
+comment on table public.user_blocks is
+  'Private safety data used by common matching eligibility. Blocked users cannot read these rows.';
+
+create index if not exists user_blocks_blocker_id_idx
+  on public.user_blocks (blocker_id);
+
+alter table public.user_blocks enable row level security;
+
+drop policy if exists "Users can view their own blocks" on public.user_blocks;
+create policy "Users can view their own blocks"
+on public.user_blocks for select to authenticated
+using (auth.uid() = blocker_id);
+
+drop policy if exists "Users can create their own blocks" on public.user_blocks;
+create policy "Users can create their own blocks"
+on public.user_blocks for insert to authenticated
+with check (auth.uid() = blocker_id);
+
+drop policy if exists "Users can delete their own blocks" on public.user_blocks;
+create policy "Users can delete their own blocks"
+on public.user_blocks for delete to authenticated
+using (auth.uid() = blocker_id);
