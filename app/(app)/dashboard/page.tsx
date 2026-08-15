@@ -35,6 +35,15 @@ export default async function DashboardPage() {
 
       <div className="flex flex-wrap gap-2">
         <Link
+          href="/discover/dating"
+          className={cn(
+            buttonVariants({ size: "lg" }),
+            "bg-[#0f4c45] text-white hover:bg-[#0c3d38]"
+          )}
+        >
+          Explore matches
+        </Link>
+        <Link
           href="/onboarding"
           className={cn(
             buttonVariants({ size: "lg" }),

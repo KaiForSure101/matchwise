@@ -28,3 +28,4 @@ Never put `SUPABASE_SERVICE_ROLE_KEY` or `DEEPSEEK_API_KEY` in client code or `N
 - `npm run start` — serve production build
 - `npm run lint` — ESLint
 - `npm run test` — matching-engine unit tests
+- `npm run seed:demo` — create fictional demo accounts after setting `DEMO_SEED_PASSWORD` locally
