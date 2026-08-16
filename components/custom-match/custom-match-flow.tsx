@@ -17,6 +17,7 @@ export function CustomMatchFlow() {
   const [criteriaText, setCriteriaText] = useState("")
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [useMock, setUseMock] = useState(false)
   const [results, setResults] = useState<Array<{
     candidate: {
       displayName: string
@@ -37,7 +38,7 @@ export function CustomMatchFlow() {
     setLoading(true)
     setError(null)
     try {
-      const response = await interpretCustomMatchRequest(request)
+      const response = await interpretCustomMatchRequest(request, { forceMock: useMock })
       if ("error" in response) {
         setError(typeof response.error === "string" ? response.error : "The request could not be processed right now.")
         return
@@ -100,9 +101,15 @@ export function CustomMatchFlow() {
         />
         <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
           <p className="text-xs text-muted-foreground">{request.length}/500</p>
-          <Button disabled={loading || !request.trim()} onClick={handleInterpretRequest}>
-            {loading ? "Interpreting…" : "Interpret request"}
-          </Button>
+          <div className="flex items-center gap-3">
+            <label className="flex items-center gap-2 text-sm">
+              <input type="checkbox" checked={useMock} onChange={(e) => setUseMock(e.target.checked)} />
+              <span>Use mock AI (local demo)</span>
+            </label>
+            <Button disabled={loading || !request.trim()} onClick={handleInterpretRequest}>
+              {loading ? "Interpreting…" : "Interpret request"}
+            </Button>
+          </div>
         </div>
       </SectionCard>
 

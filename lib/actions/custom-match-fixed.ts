@@ -38,14 +38,17 @@ Rules:
 - Keep the output concise and deterministic.
 `
 
-export async function interpretCustomMatchRequest(request: string) {
+export async function interpretCustomMatchRequest(request: string, options?: { forceMock?: boolean }) {
   const text = request.trim()
   if (!text) {
     return { error: "Please describe what you're looking for before interpreting the request." }
   }
 
   // Demo/mock fallback: allow local demos when FORCE_DEEPSEEK_MOCK=true
-  const forceMock = process.env.FORCE_DEEPSEEK_MOCK === "true"
+  // Or allow client-requested mock only when ALLOW_CLIENT_FORCE_MOCK=true for safety
+  const allowClientForce = process.env.ALLOW_CLIENT_FORCE_MOCK === "true"
+  const clientRequestedMock = Boolean(options?.forceMock) && allowClientForce
+  const forceMock = process.env.FORCE_DEEPSEEK_MOCK === "true" || clientRequestedMock
   if (forceMock) {
     // Simple deterministic mapping for common demo prompts
     const lower = text.toLowerCase()

@@ -15,6 +15,19 @@ npm run dev
 
 Never put `SUPABASE_SERVICE_ROLE_KEY` or `DEEPSEEK_API_KEY` in client code or `NEXT_PUBLIC_*` variables.
 
+Demo notes:
+
+- If you do not have a DeepSeek account or your key returns 401/402, enable the local demo mock by setting in `.env.local`:
+
+  FORCE_DEEPSEEK_MOCK=true
+
+  Optionally allow the client UI to toggle the mock (for demos) by adding:
+
+  ALLOW_CLIENT_FORCE_MOCK=true
+
+  Then restart the Next.js dev server. The Custom Match page includes a "Use mock AI (local demo)" checkbox that lets you run the full flow without a DeepSeek key.
+
+
 ## Phase status
 
 - **Phase 1:** Auth, landing, protected dashboard shell
