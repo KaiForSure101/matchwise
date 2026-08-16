@@ -11,7 +11,7 @@ import type { CustomMatchCriteria } from "@/lib/custom-match/schema"
 
 const DEFAULT_PROMPT = "Create a four-person hackathon team. I need strong programming skills, someone good at presenting, and people available on weekends."
 
-export function CustomMatchFlow() {
+export function CustomMatchFlow({ showMockActive = false, allowClientToggle = false }: { showMockActive?: boolean; allowClientToggle?: boolean }) {
   const [request, setRequest] = useState(DEFAULT_PROMPT)
   const [criteria, setCriteria] = useState<CustomMatchCriteria | null>(null)
   const [criteriaText, setCriteriaText] = useState("")
@@ -90,6 +90,13 @@ export function CustomMatchFlow() {
         description="DeepSeek interprets your request into structured Matchwise criteria. Matchwise still makes the actual decision using the deterministic matching engine."
       />
 
+      {showMockActive ? (
+        <div className="rounded-md border border-[#0f4c45]/10 bg-[#fff9f6] p-3">
+          <p className="text-sm font-medium text-[#0f4c45]">Mock mode active</p>
+          <p className="text-xs text-muted-foreground">FORCE_DEEPSEEK_MOCK=true — the AI interpretation is mocked for local demos.</p>
+        </div>
+      ) : null}
+
       <SectionCard title="Your request">
         <textarea
           value={request}
@@ -102,10 +109,14 @@ export function CustomMatchFlow() {
         <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
           <p className="text-xs text-muted-foreground">{request.length}/500</p>
           <div className="flex items-center gap-3">
-            <label className="flex items-center gap-2 text-sm">
-              <input type="checkbox" checked={useMock} onChange={(e) => setUseMock(e.target.checked)} />
-              <span>Use mock AI (local demo)</span>
-            </label>
+            {allowClientToggle ? (
+              <label className="flex items-center gap-2 text-sm">
+                <input type="checkbox" checked={useMock} onChange={(e) => setUseMock(e.target.checked)} />
+                <span>Use mock AI (local demo)</span>
+              </label>
+            ) : (
+              <span className="text-xs text-muted-foreground">Client toggle disabled</span>
+            )}
             <Button disabled={loading || !request.trim()} onClick={handleInterpretRequest}>
               {loading ? "Interpreting…" : "Interpret request"}
             </Button>

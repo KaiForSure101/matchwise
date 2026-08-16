@@ -5,5 +5,7 @@ export const metadata = {
 }
 
 export default function CustomMatchPage() {
-  return <CustomMatchFlow />
+  const forceMock = process.env.FORCE_DEEPSEEK_MOCK === "true"
+  const allowClientForce = process.env.ALLOW_CLIENT_FORCE_MOCK === "true"
+  return <CustomMatchFlow showMockActive={forceMock} allowClientToggle={allowClientForce} />
 }
