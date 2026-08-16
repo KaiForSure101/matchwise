@@ -44,6 +44,53 @@ export async function interpretCustomMatchRequest(request: string) {
     return { error: "Please describe what you're looking for before interpreting the request." }
   }
 
+  // Demo/mock fallback: allow local demos when FORCE_DEEPSEEK_MOCK=true
+  const forceMock = process.env.FORCE_DEEPSEEK_MOCK === "true"
+  if (forceMock) {
+    // Simple deterministic mapping for common demo prompts
+    const lower = text.toLowerCase()
+    let mock: any = {
+      mode: "friends",
+      objective: text.slice(0, 200),
+      candidateType: "person",
+      criteria: [],
+      requestedSkills: [],
+      availabilityRequirements: [],
+      explanation: "Mocked by local FORCE_DEEPSEEK_MOCK for demo",
+    }
+
+    if (lower.includes("hackathon") || lower.includes("team")) {
+      mock.mode = "teams"
+      mock.candidateType = "team"
+      mock.teamSize = 4
+      mock.requestedSkills = ["programming", "presentation"]
+      mock.criteria.push({ key: "skills", operator: "includes", value: ["programming"], importance: "required", hard: true })
+      mock.criteria.push({ key: "roles", operator: "includes", value: ["presenter"], importance: "high", hard: false })
+      if (lower.includes("weekend")) {
+        mock.availabilityRequirements = ["weekends"]
+        mock.criteria.push({ key: "availability", operator: "available_on", value: ["weekends"], importance: "high", hard: true })
+      }
+    } else if (lower.includes("study") || lower.includes("learn")) {
+      mock.mode = "study"
+      mock.criteria.push({ key: "study_subject", operator: "equals", value: "python", importance: "required", hard: true })
+      mock.requestedSkills = ["python"]
+      mock.availabilityRequirements = ["weekends"]
+    } else if (lower.includes("dating") || lower.includes("serious") || lower.includes("relationship")) {
+      mock.mode = "dating"
+      mock.candidateType = "person"
+      mock.criteria.push({ key: "relationship_intent", operator: "equals", value: "serious", importance: "high", hard: false })
+    } else if (lower.includes("friend") || lower.includes("friends")) {
+      mock.mode = "friends"
+      mock.criteria.push({ key: "interests", operator: "has_interest", value: ["gaming"], importance: "medium", hard: false })
+    }
+
+    const validatedMock = parseCustomCriteria(mock)
+    if (!validatedMock.success) {
+      return { error: `Local mock could not be validated: ${validatedMock.error}` }
+    }
+    return { success: true, criteria: validatedMock.data }
+  }
+
   const apiKey = process.env.DEEPSEEK_API_KEY
   if (!apiKey) {
     return { error: "DeepSeek is not configured on this server." }
@@ -83,6 +130,9 @@ export async function interpretCustomMatchRequest(request: string) {
     // Return a helpful but safe message
     if (response.status === 401) {
       return { error: "DeepSeek authentication failed (401). Check your DEEPSEEK_API_KEY and try again." }
+    }
+    if (response.status === 402) {
+      return { error: "DeepSeek returned Payment Required (402). Enable billing or use FORCE_DEEPSEEK_MOCK=true for local demos." }
     }
 
     return { error: "DeepSeek could not interpret the request right now. Please try again." }
