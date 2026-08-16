@@ -26,8 +26,30 @@ export default async function ProfilePage() {
     ? contextProfiles.find((c) => c.mode === activeMode)
     : null
 
+  // Profile completeness: simple heuristic based on key categories
+  const completenessCategories = [
+    Boolean(profile?.display_name),
+    Boolean(profile?.username),
+    skills.length > 0,
+    interests.length > 0,
+    availability.length > 0,
+    Boolean(activeContext && (activeContext.looking_for || activeContext.goal || activeContext.notes)),
+  ]
+  const completenessScore = Math.round((completenessCategories.filter(Boolean).length / completenessCategories.length) * 100)
+
   return (
     <div className="space-y-8">
+      <div className="rounded-lg border border-[#0f4c45]/10 bg-white/80 p-4">
+        <p className="text-sm font-medium text-[#0f4c45]">Profile completeness</p>
+        <div className="mt-2 h-3 w-full rounded-full bg-[#e6f7f5]">
+          <div
+            className="h-3 rounded-full bg-[#0f4c45]"
+            style={{ width: `${completenessScore}%` }}
+            aria-hidden
+          />
+        </div>
+        <p className="mt-2 text-xs text-muted-foreground">{completenessScore}% complete — fill the sections below to improve your matches.</p>
+      </div>
       <PageIntro
         eyebrow="Your profile"
         title="Structured data for better matching later"
