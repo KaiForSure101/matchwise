@@ -49,6 +49,17 @@ export default async function ProfilePage() {
           />
         </div>
         <p className="mt-2 text-xs text-muted-foreground">{completenessScore}% complete — fill the sections below to improve your matches.</p>
+        <div className="mt-3 text-sm">
+          <p className="text-xs text-muted-foreground">Missing:</p>
+          <ul className="mt-1 list-disc pl-5 text-sm text-muted-foreground">
+            {completenessCategories[0] ? null : <li>Display name</li>}
+            {completenessCategories[1] ? null : <li>Username</li>}
+            {completenessCategories[2] ? null : <li>At least one skill</li>}
+            {completenessCategories[3] ? null : <li>At least one interest</li>}
+            {completenessCategories[4] ? null : <li>Availability</li>}
+            {completenessCategories[5] ? null : <li>Mode context (notes/goal)</li>}
+          </ul>
+        </div>
       </div>
       <PageIntro
         eyebrow="Your profile"
