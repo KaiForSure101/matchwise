@@ -166,21 +166,30 @@ function ContextFields({
         <div className="grid gap-4 sm:grid-cols-2">
           <div className="space-y-2">
             <Label htmlFor="intent">Relationship intent</Label>
-            <Input
+            <NativeSelect
               id="intent"
               value={relationshipIntent}
-              onValueChange={setRelationshipIntent}
-              placeholder="e.g. long-term, exploring"
-            />
+              onChange={(e) => setRelationshipIntent(e.target.value)}
+            >
+              <option value="">(unspecified)</option>
+              <option value="Long-term relationship">Long-term relationship</option>
+              <option value="Casual dating">Casual dating</option>
+              <option value="Open to either">Open to either</option>
+              <option value="Not sure yet">Not sure yet</option>
+            </NativeSelect>
           </div>
           <div className="space-y-2">
             <Label htmlFor="structure">Relationship structure</Label>
-            <Input
+            <NativeSelect
               id="structure"
               value={relationshipStructure}
-              onValueChange={setRelationshipStructure}
-              placeholder="e.g. monogamous"
-            />
+              onChange={(e) => setRelationshipStructure(e.target.value)}
+            >
+              <option value="">(unspecified)</option>
+              <option value="Monogamous">Monogamous</option>
+              <option value="Open/Polyamorous">Open/Polyamorous</option>
+              <option value="Other">Other</option>
+            </NativeSelect>
           </div>
         </div>
       ) : null}
