@@ -27,11 +27,15 @@ Demo notes:
 
   Then restart the Next.js dev server. The Custom Match page includes a "Use mock AI (local demo)" checkbox that lets you run the full flow without a DeepSeek key.
 
-- Admin/debug: enable an internal debug view for development by setting:
+- Admin/debug: enable an internal debug view for development by setting server-side env:
 
   ADMIN_DEBUG=true
 
-  When enabled, visit /profile/debug to inspect the server-side profile bundle and top discovery results for the signed-in user. Do not enable this in production or with real user data.
+  Optionally show an "Admin Debug" link in the dashboard navigation by also setting (client-side):
+
+  NEXT_PUBLIC_ADMIN_DEBUG=true
+
+  When enabled (server + client flag), visit /profile/debug to inspect the server-side profile bundle and top discovery results for the signed-in user. Do not enable these in production or with real user data.
 
 
 ## Phase status
