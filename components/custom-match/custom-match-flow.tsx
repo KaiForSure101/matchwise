@@ -6,7 +6,7 @@ import { PageIntro, SectionCard } from "@/components/profile/ui-bits"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
-import { executeCustomMatch, interpretCustomMatchRequest } from "@/lib/actions/custom-match"
+import { executeCustomMatch, interpretCustomMatchRequest } from "@/lib/actions/custom-match-fixed"
 import type { CustomMatchCriteria } from "@/lib/custom-match/schema"
 
 const DEFAULT_PROMPT = "Create a four-person hackathon team. I need strong programming skills, someone good at presenting, and people available on weekends."
